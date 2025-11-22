@@ -1,0 +1,45 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: entrega_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: entrega
+      POSTGRES_PASSWORD: entrega123
+      POSTGRES_DB: entrega_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./database:/var/lib/postgresql/data
+    networks:
+      - entrega_net
+
+  adminer:
+    image: adminer
+    container_name: entrega_adminer
+    restart: always
+    ports:
+      - "8080:8080"
+    networks:
+      - entrega_net
+
+  backend:
+    build: ./backend
+    container_name: entrega_backend
+    restart: always
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: postgresql://entrega:entrega123@postgres:5432/entrega_db
+    volumes:
+      - ./backend/app:/app/app
+    ports:
+      - "8000:8000"
+    networks:
+      - entrega_net
+
+networks:
+  entrega_net:
+    driver: bridge

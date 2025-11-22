@@ -1,0 +1,16 @@
+# Ignorar banco de dados
+database/
+
+# Caches Python
+__pycache__/
+*.pyc
+
+# Logs
+*.log
+
+# Ambiente virtual
+venv/
+.env
+
+# Arquivos gerados pelo Docker
+*.pid
